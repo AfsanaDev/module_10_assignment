@@ -87,55 +87,52 @@ class _ContactlistscreenState extends State<Contactlistscreen> {
               ),
             ),
             //const SizedBox(height: 10),
-            SingleChildScrollView(
-              child: ListView.builder(
-                shrinkWrap: true, // Fix: Prevent infinite height issue
-                itemCount: contactList.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onLongPress: () => showCustomDialog(context,index),
-                    child:  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.person, color: Colors.blueAccent),
-                      title: Text(contactList[index]['name'] ?? "", style: TextStyle(
-                        //fontSize: 20,
-                        fontWeight: FontWeight.w500,
-                      ),),
-                      subtitle: Text(contactList[index]['number'] ?? ""),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.phone, color: Colors.blueAccent),
-                        onPressed: (){},//=> removeContactList(index),
-                      ),
+            ListView.builder(
+              shrinkWrap: true, // Fix: Prevent infinite height issue
+              itemCount: contactList.length,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onLongPress: ()// => showCustomDialog(context,index),
+                  {
+                       showDialog(context: context, builder: (context){   
+                      return AlertDialog(
+                            title: Text("Conformation"),
+                            content: Text("Are you sure for delete this contact?"),
+                            //title: const Text("Are you sure to remove contact?"),
+                            actions: [
+                              TextButton(
+                                child:Icon(Icons.signal_cellular_no_sim_outlined),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                              TextButton(onPressed: (){ removeContactList(index);},
+                              child: Icon(Icons.delete_outlined))
+                          
+                          ],);});
+                  },
+                  child:  Card(
+                  child: ListTile(
+                    leading: Icon(Icons.person, color: Colors.blueAccent),
+                    title: Text(contactList[index]['name'] ?? "", style: TextStyle(
+                      //fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),),
+                    subtitle: Text(contactList[index]['number'] ?? ""),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.phone, color: Colors.blueAccent),
+                      onPressed: (){},//=> removeContactList(index),
                     ),
-                  )
-                    );
-                },
-              ),
+                  ),
+                )
+                  );
+              },
             ),
           ],
         ),
       ),
     );
   }
-
-   void showCustomDialog (BuildContext context,int index) {
-                  showDialog(context: context, builder: (context){   
-               return AlertDialog(
-                    title: Text("Conformation"),
-                    content: Text("Are you sure for delete this contact?"),
-                    //title: const Text("Are you sure to remove contact?"),
-                    actions: [
-                      TextButton(
-                        child:Icon(Icons.signal_cellular_no_sim_outlined),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                      TextButton(onPressed: (){ removeContactList(index);},
-                       child: Icon(Icons.delete_outlined))
-                  
-                  ],);});
-                }
                 
 
 }       
